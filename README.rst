@@ -1,7 +1,7 @@
 sitemap
 =======
 
-Sitemap library for dynamically generate sitemap.xml
+Sitemap library for dynamically generating ``sitemap.xml``
 
 Installation
 ------------
