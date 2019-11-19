@@ -1,6 +1,7 @@
 
 from sitemap import UrlSet, Url, Sitemap, SiteIndex
 
+
 def test_urlset():
     urlset = UrlSet()
     url = Url('https://www.example.com/', priority=0.1)

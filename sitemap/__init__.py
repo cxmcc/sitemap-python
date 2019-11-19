@@ -3,6 +3,9 @@ import io
 import xml.etree.cElementTree as etree
 
 
+__all__ = ['Url', 'UrlSet', 'Sitemap', 'SiteIndex']
+
+
 VALID_CHANGEFREQ = ['always', 'hourly', 'daily', 'weekly',
                     'monthly', 'yearly', 'never']
 ATTR_XMLNS_XSI = 'http://www.w3.org/2001/XMLSchema-instance'
