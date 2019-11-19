@@ -1,4 +1,5 @@
 import datetime
+import io
 import xml.etree.cElementTree as etree
 
 
@@ -56,11 +57,17 @@ class UrlSet:
         for url in self.urls:
             doc = etree.SubElement(root, 'url')
             url.fill_doc(doc)
-        return root
+        tree = etree.ElementTree(root)
+        return tree
+
+    def to_string(self):
+        tree = self._to_etree()
+        with io.BytesIO() as f:
+            tree.write(f, encoding='utf-8', xml_declaration=True)
+            return f.getvalue().decode('utf-8')
 
     def write_xml(self, filename):
-        root = self._to_etree()
-        tree = etree.ElementTree(root)
+        tree = self._to_etree()
         tree.write(filename, encoding='utf-8', xml_declaration=True)
 
 
