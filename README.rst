@@ -3,6 +3,9 @@ sitemap
 
 Sitemap library for dynamically generating ``sitemap.xml``
 
+.. image:: https://img.shields.io/pypi/v/sitemap.svg
+    :target: https://pypi.python.org/pypi/sitemap
+
 Installation
 ------------
 
