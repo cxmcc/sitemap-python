@@ -12,9 +12,21 @@ ATTR_XSI_SCHEMALOCATION_SITEMAP = (
 )
 ATTR_XSI_SCHEMALOCATION_SITEINDEX = (
     'http://www.sitemaps.org/schemas/sitemap/0.9 '
-    'http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd'
+    'http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd'
 )
 ATTR_XMLNS = 'http://www.sitemaps.org/schemas/sitemap/0.9'
+
+
+class Root:
+    def to_string(self):
+        tree = self._to_etree()
+        with io.BytesIO() as f:
+            tree.write(f, encoding='utf-8', xml_declaration=True)
+            return f.getvalue().decode('utf-8')
+
+    def write_xml(self, filename):
+        tree = self._to_etree()
+        tree.write(filename, encoding='utf-8', xml_declaration=True)
 
 
 class Url:
@@ -41,7 +53,7 @@ class Url:
             etree.SubElement(doc, 'priority').text = '%0.1f' % self.priority
 
 
-class UrlSet:
+class UrlSet(Root):
     def __init__(self):
         self.urls = []
 
@@ -60,16 +72,6 @@ class UrlSet:
         tree = etree.ElementTree(root)
         return tree
 
-    def to_string(self):
-        tree = self._to_etree()
-        with io.BytesIO() as f:
-            tree.write(f, encoding='utf-8', xml_declaration=True)
-            return f.getvalue().decode('utf-8')
-
-    def write_xml(self, filename):
-        tree = self._to_etree()
-        tree.write(filename, encoding='utf-8', xml_declaration=True)
-
 
 class Sitemap:
     def __init__(self, loc, lastmod=None):
@@ -85,7 +87,7 @@ class Sitemap:
             etree.SubElement(doc, 'lastmod').text = lastmod
 
 
-class SiteIndex:
+class SiteIndex(Root):
     def __init__(self):
         self.sitemaps = []
 
@@ -104,13 +106,3 @@ class SiteIndex:
         root = self._to_etree()
         tree = etree.ElementTree(root)
         return tree
-
-    def to_string(self):
-        tree = self._to_etree()
-        with io.BytesIO() as f:
-            tree.write(f, encoding='utf-8', xml_declaration=True)
-            return f.getvalue().decode('utf-8')
-
-    def write_xml(self, filename):
-        tree = self._to_etree()
-        tree.write(filename, encoding='utf-8', xml_declaration=True)
