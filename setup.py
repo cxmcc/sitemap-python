@@ -6,7 +6,7 @@ with open('README.rst', 'r') as f:
 setup(
   name='sitemap',
   packages=['sitemap'],
-  version='20191118',
+  version='20191119',
   license='MIT',
   description='Sitemap library',
   long_description=long_description,
