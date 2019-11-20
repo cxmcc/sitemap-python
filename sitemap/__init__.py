@@ -3,7 +3,7 @@ import io
 import xml.etree.cElementTree as etree
 
 
-__all__ = ['Url', 'UrlSet', 'Sitemap', 'SiteIndex']
+__all__ = ['Url', 'Urlset', 'Sitemap', 'Siteindex']
 
 
 VALID_CHANGEFREQ = ['always', 'hourly', 'daily', 'weekly',
@@ -35,11 +35,18 @@ class Root:
 class Url:
     def __init__(self, loc, lastmod=None, changefreq=None, priority=None):
         if lastmod is not None:
-            assert isinstance(lastmod, datetime.datetime)
+            if not isinstance(lastmod, datetime.datetime):
+                raise TypeError
         if changefreq is not None:
-            assert changefreq in VALID_CHANGEFREQ
+            if not isinstance(changefreq, str):
+                raise TypeError
+            if changefreq not in VALID_CHANGEFREQ:
+                raise ValueError
         if priority is not None:
-            assert 0.0 <= priority <= 1.0
+            if not isinstance(priority, (int, float)):
+                raise TypeError
+            if not 0.0 <= priority <= 1.0:
+                raise ValueError
         self.loc = loc
         self.lastmod = lastmod
         self.changefreq = changefreq
@@ -56,12 +63,13 @@ class Url:
             etree.SubElement(doc, 'priority').text = '%0.1f' % self.priority
 
 
-class UrlSet(Root):
+class Urlset(Root):
     def __init__(self):
         self.urls = []
 
     def add_url(self, url):
-        assert isinstance(url, Url)
+        if not isinstance(url, Url):
+            raise TypeError
         self.urls.append(url)
 
     def _to_etree(self):
@@ -79,7 +87,8 @@ class UrlSet(Root):
 class Sitemap:
     def __init__(self, loc, lastmod=None):
         if lastmod is not None:
-            assert isinstance(lastmod, datetime.datetime)
+            if not isinstance(lastmod, datetime.datetime):
+                raise TypeError
         self.loc = loc
         self.lastmod = lastmod
 
@@ -90,13 +99,14 @@ class Sitemap:
             etree.SubElement(doc, 'lastmod').text = lastmod
 
 
-class SiteIndex(Root):
+class Siteindex(Root):
     def __init__(self):
         self.sitemaps = []
 
     def add_sitemap(self, sitemap):
-        assert isinstance(sitemap, Sitemap)
-        self.urls.append(sitemap)
+        if not isinstance(sitemap, Sitemap):
+            raise TypeError
+        self.sitemaps.append(sitemap)
 
     def _to_etree(self):
         root = etree.Element('siteindex')
@@ -106,6 +116,5 @@ class SiteIndex(Root):
         for sitemap in self.sitemaps:
             doc = etree.SubElement(root, 'sitemap')
             sitemap.fill_doc(doc)
-        root = self._to_etree()
         tree = etree.ElementTree(root)
         return tree

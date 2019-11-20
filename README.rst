@@ -16,13 +16,33 @@ Installation
 Usage
 -----
 
+Urlset
+^^^^^^
+
 .. code:: python
 
-    from sitemap import Url, UrlSet
+    from sitemap import Url, Urlset
     
-    urlset = UrlSet()
+    urlset = Urlset()
     url = Url('https://www.example.com/', changefreq='weekly')
     
     urlset.add_url(url)
-    
+
+    # urlset.to_string()
     urlset.write_xml('sitemap.xml')
+
+Siteindex
+^^^^^^^^^
+
+.. code:: python
+
+    from sitemap import Sitemap, Siteindex
+    
+    siteindex = Siteindex()
+    sitemap = Sitemap('https://www.example.com/sitemap.xml')
+    
+    siteindex.add_sitemap(sitemap)
+
+    # siteindex.to_string()
+    siteindex.write_xml('sitemap.xml')
+
