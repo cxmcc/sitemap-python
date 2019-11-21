@@ -1,4 +1,3 @@
-import pytest
 from sitemap import Siteindex, Sitemap
 
 
